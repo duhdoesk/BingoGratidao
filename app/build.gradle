@@ -76,6 +76,9 @@ dependencies {
 //    Room
     implementation "androidx.room:room-runtime:2.5.1"
     annotationProcessor "androidx.room:room-compiler:2.5.1"
+
+//    ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1"
 }
 
 kapt {
