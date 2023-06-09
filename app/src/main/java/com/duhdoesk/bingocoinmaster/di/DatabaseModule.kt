@@ -29,7 +29,7 @@ class DatabaseModule {
             AppDatabase::class.java,
             "appDatabase"
         )
-//            .createFromAsset() -> we need to create a prefilled database
+            .createFromAsset("coin.db")
             .build()
 
 }
