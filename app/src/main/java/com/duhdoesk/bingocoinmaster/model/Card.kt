@@ -8,7 +8,7 @@ import java.util.UUID
 @Entity(tableName = "card_table")
 data class Card(
     @PrimaryKey
-    val cardId: UUID = UUID.randomUUID(),
+    val cardId: String,
 
     @ColumnInfo(name = "card_name")
     val name: String,

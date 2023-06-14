@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.duhdoesk.bingocoinmaster.model.Card
 import com.duhdoesk.bingocoinmaster.repository.CardRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +18,8 @@ sealed class DrawState {
     data class Ready(val cardList: List<Card>) : DrawState()
 }
 
-class drawerViewModel @Inject constructor(private val repository: CardRepository) : ViewModel() {
+@HiltViewModel
+class DrawerViewModel @Inject constructor(private val repository: CardRepository) : ViewModel() {
 
 //    state variables
     private val _drawState = MutableStateFlow<DrawState>(DrawState.Loading)
@@ -27,12 +29,10 @@ class drawerViewModel @Inject constructor(private val repository: CardRepository
     private val cardList: MutableState<List<Card>> = mutableStateOf(emptyList())
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             cardList.value = repository.getAllCards()
-            sortNewBingoCard()
         }
     }
-
     fun sortNewBingoCard() {
         _drawState.value = DrawState.Ready(
             cardList
