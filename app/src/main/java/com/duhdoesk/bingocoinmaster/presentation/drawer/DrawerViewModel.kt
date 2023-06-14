@@ -1,5 +1,6 @@
 package com.duhdoesk.bingocoinmaster.presentation.drawer
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 sealed class DrawState {
     object Loading : DrawState()
-    data class Ready(val cardList: List<Card>) : DrawState()
+    object Ready : DrawState()
+    data class Drawn(val cardList: List<Card>) : DrawState()
 }
 
 @HiltViewModel
@@ -31,10 +33,11 @@ class DrawerViewModel @Inject constructor(private val repository: CardRepository
     init {
         viewModelScope.launch {
             cardList.value = repository.getAllCards()
+            _drawState.value = DrawState.Ready
         }
     }
     fun sortNewBingoCard() {
-        _drawState.value = DrawState.Ready(
+        _drawState.value = DrawState.Drawn(
             cardList
                 .value
                 .shuffled()

@@ -10,6 +10,7 @@ import com.duhdoesk.bingocoinmaster.presentation.drawer.DrawState
 import com.duhdoesk.bingocoinmaster.presentation.drawer.LoadingScreen
 import com.duhdoesk.bingocoinmaster.presentation.drawer.DrawerViewModel
 import com.duhdoesk.bingocoinmaster.presentation.drawer.DrawingScreen
+import com.duhdoesk.bingocoinmaster.presentation.drawer.ReadyScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,11 +26,20 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun BingoApp(viewModel: DrawerViewModel) {
-    val state = viewModel.state.collectAsState().value
 
-    if (state == DrawState.Loading) {
-        LoadingScreen()
-    } else {
-        DrawingScreen(state as DrawState.Ready)
+    when (val state = viewModel.state.collectAsState().value) {
+        is DrawState.Loading -> {
+            LoadingScreen()
+        }
+
+        is DrawState.Ready -> {
+            ReadyScreen(
+                onClick = { viewModel.sortNewBingoCard() }
+            )
+        }
+
+        else -> {
+            DrawingScreen(state = state as DrawState.Drawn)
+        }
     }
 }
