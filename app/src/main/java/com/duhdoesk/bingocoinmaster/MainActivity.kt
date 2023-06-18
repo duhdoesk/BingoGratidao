@@ -39,7 +39,10 @@ fun BingoApp(viewModel: DrawerViewModel) {
         }
 
         else -> {
-            DrawingScreen(state = state as DrawState.Drawn)
+            DrawingScreen(
+                state = state as DrawState.Drawn,
+                onClick = { viewModel.sortNewBingoCard() }
+            )
         }
     }
 }

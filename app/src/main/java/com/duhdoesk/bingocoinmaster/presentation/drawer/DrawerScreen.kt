@@ -3,6 +3,7 @@ package com.duhdoesk.bingocoinmaster.presentation.drawer
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
@@ -11,11 +12,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.duhdoesk.bingocoinmaster.presentation.components.BingoCard
 
 @Composable
-fun DrawingScreen(state: DrawState.Drawn) {
-    for (card in state.cardList) {
-        Text(text = card.name)
+fun DrawingScreen(
+    state: DrawState.Drawn,
+    onClick: () -> Unit
+) {
+//    for (card in state.cardList) {
+//        Text(text = card.name)
+//    }
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        BingoCard()
+
+        Button(
+            onClick = { onClick() },
+            modifier = Modifier.padding(top = 64.dp)
+        ) {
+            Text("New Card")
+        }
     }
 }
 

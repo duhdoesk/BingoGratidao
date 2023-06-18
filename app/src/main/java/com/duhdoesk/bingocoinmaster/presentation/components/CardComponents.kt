@@ -5,7 +5,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -36,7 +38,7 @@ fun BingoCard() {
     ) {
         BingoLazyGrid()
 
-        Row(Modifier.padding(vertical = 8.dp, horizontal = 4.dp)) {
+        Column(Modifier.padding(vertical = 8.dp, horizontal = 4.dp)) {
             Text(
                 text = "Bingo da Gratidão",
                 textAlign = TextAlign.Center,
@@ -45,6 +47,18 @@ fun BingoCard() {
                 fontFamily = FontFamily.Cursive,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.fillMaxWidth()
+            )
+
+            Text(
+                text = "Cartela nº",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
             )
         }
 
