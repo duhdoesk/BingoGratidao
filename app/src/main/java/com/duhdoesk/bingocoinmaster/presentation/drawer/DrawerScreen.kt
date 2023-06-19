@@ -29,7 +29,8 @@ fun DrawingScreen(
         BingoCard(state = state)
 
         Button(
-            onClick = { onClick() }
+            onClick = { onClick() },
+            modifier = Modifier.padding(top = 8.dp)
         ) {
             Text("New Card")
         }
@@ -49,7 +50,7 @@ fun ReadyScreen(onClick: () -> Unit) {
             onClick = { onClick() },
             modifier = Modifier
                 .width(160.dp)
-                .padding(top = 8.dp)
+                .padding(top = 16.dp)
         ) {
             Text("Draw")
         }

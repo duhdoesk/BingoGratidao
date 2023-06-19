@@ -42,7 +42,6 @@ fun BingoCard(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        BingoLazyGrid(state.cardList.take(3))
 
         Column(Modifier.padding(horizontal = 4.dp)) {
             Text(
@@ -81,8 +80,7 @@ fun BingoCard(
                     Text(
                         text = "Cartela nº",
                         textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth()
                     )
 
                     Text(
@@ -111,9 +109,7 @@ fun BingoCard(
 
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
-
-        BingoLazyGrid(state.cardList.takeLast(3))
+        BingoLazyGrid(state.cardList)
     }
 }
 
@@ -122,14 +118,12 @@ fun BingoLazyGrid(
     cards: List<Card>
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 100.dp),
-        userScrollEnabled = false
+        columns = GridCells.Adaptive(minSize = 100.dp), userScrollEnabled = false
     ) {
         for (card in cards) {
             item {
                 BingoStone(
-                    card = card,
-                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp)
+                    card = card, modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp)
                 )
             }
         }
@@ -138,16 +132,14 @@ fun BingoLazyGrid(
 
 @Composable
 fun BingoStone(
-    card: Card,
-    modifier: Modifier = Modifier
+    card: Card, modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
     ) {
         Card(
             shape = RoundedCornerShape(12.dp),
-            border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary)
         ) {
             Box(contentAlignment = Alignment.BottomStart) {
                 Image(
@@ -175,19 +167,17 @@ fun BingoStone(
                     )
                 }
             }
-        }
-
-        Row(Modifier.fillMaxWidth()) {
-            Text(
-                text = card.name,
-                style = MaterialTheme.typography.labelMedium,
-                maxLines = 2,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(2.dp)
-                    .height(50.dp)
-            )
+            Row(Modifier.fillMaxWidth()) {
+                Text(
+                    text = card.name,
+                    style = MaterialTheme.typography.labelMedium,
+                    maxLines = 2,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(2.dp)
+                )
+            }
         }
     }
 }
