@@ -2,10 +2,12 @@ package com.duhdoesk.bingocoinmaster.presentation.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,19 +28,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.duhdoesk.bingocoinmaster.R
+import com.duhdoesk.bingocoinmaster.model.Card
+import com.duhdoesk.bingocoinmaster.presentation.drawer.DrawState
 
 @Composable
-fun BingoCard() {
+fun BingoCard(
+    state: DrawState.Drawn
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        BingoLazyGrid()
+        BingoLazyGrid(state.cardList.take(3))
 
-        Column(Modifier.padding(vertical = 8.dp, horizontal = 4.dp)) {
+        Column(Modifier.padding(4.dp)) {
             Text(
                 text = "Bingo da Gratidão",
                 textAlign = TextAlign.Center,
@@ -49,36 +54,90 @@ fun BingoCard() {
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Text(
-                text = "Cartela nº",
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
+            Row(Modifier.fillMaxWidth()) {
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(40.dp)
-            )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth(0.33f)
+                        .height(80.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.hearts),
+                        contentDescription = "Hearts",
+                        modifier = Modifier.size(60.dp)
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .height(80.dp)
+                ) {
+                    Text(
+                        text = "Cartela nº",
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+
+                    Text(
+                        text = state.counter.toString(),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 32.sp,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.hearts),
+                        contentDescription = "Hearts",
+                        modifier = Modifier.size(60.dp)
+                    )
+                }
+            }
+
         }
 
-        BingoLazyGrid()
+        BingoLazyGrid(state.cardList.takeLast(3))
     }
 }
 
 @Composable
-fun BingoLazyGrid() {
+fun BingoLazyGrid(
+    cards: List<Card>
+) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 120.dp)
+        columns = GridCells.Adaptive(minSize = 100.dp),
+        userScrollEnabled = false
     ) {
-        item { BingoStone(Modifier.padding(4.dp)) }
-        item { BingoStone(Modifier.padding(4.dp)) }
-        item { BingoStone(Modifier.padding(4.dp)) }
+        for (card in cards) {
+            item {
+                BingoStone(
+                    card = card,
+                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp)
+                )
+            }
+        }
     }
 }
 
 @Composable
-fun BingoStone(modifier: Modifier = Modifier) {
+fun BingoStone(
+    card: Card,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
     ) {
@@ -106,36 +165,25 @@ fun BingoStone(modifier: Modifier = Modifier) {
                     )
 
                     Text(
-                        text = "24",
+                        text = card.cardId,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = Color.White
                     )
                 }
             }
+        }
 
-            Row(Modifier.fillMaxWidth()) {
-                Text(
-                    text = "Torta de Limão",
-                    maxLines = 1,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 2.dp)
-                )
-            }
+        Row(Modifier.fillMaxWidth()) {
+            Text(
+                text = card.name,
+                style = MaterialTheme.typography.labelMedium,
+                maxLines = 2,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(2.dp)
+            )
         }
     }
-}
-
-@Preview
-@Composable
-fun BingoCardPreview() {
-    BingoCard()
-}
-
-@Preview
-@Composable
-fun BingoStonePreview() {
-    BingoStone()
 }

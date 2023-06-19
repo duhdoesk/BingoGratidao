@@ -19,20 +19,18 @@ fun DrawingScreen(
     state: DrawState.Drawn,
     onClick: () -> Unit
 ) {
-//    for (card in state.cardList) {
-//        Text(text = card.name)
-//    }
-
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(4.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        BingoCard()
+        BingoCard(state = state)
 
         Button(
             onClick = { onClick() },
-            modifier = Modifier.padding(top = 64.dp)
+            modifier = Modifier.padding(top = 32.dp)
         ) {
             Text("New Card")
         }

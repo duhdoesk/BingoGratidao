@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.duhdoesk.bingocoinmaster.model.Card
 import com.duhdoesk.bingocoinmaster.repository.CardRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -17,7 +16,7 @@ import javax.inject.Inject
 sealed class DrawState {
     object Loading : DrawState()
     object Ready : DrawState()
-    data class Drawn(val cardList: List<Card>) : DrawState()
+    data class Drawn(val cardList: List<Card>, val counter: Int) : DrawState()
 }
 
 @HiltViewModel
@@ -30,6 +29,9 @@ class DrawerViewModel @Inject constructor(private val repository: CardRepository
 //    card list
     private val cardList: MutableState<List<Card>> = mutableStateOf(emptyList())
 
+//    card counter
+    private val counter = mutableStateOf(0)
+
     init {
         viewModelScope.launch {
             cardList.value = repository.getAllCards()
@@ -37,11 +39,16 @@ class DrawerViewModel @Inject constructor(private val repository: CardRepository
         }
     }
     fun sortNewBingoCard() {
+        counter.value += 1
+
         _drawState.value = DrawState.Drawn(
             cardList
                 .value
                 .shuffled()
-                .subList(0, 5)
+                .take(6),
+            counter.value
         )
+
+        Log.d("CARD", _drawState.value.toString())
     }
 }
