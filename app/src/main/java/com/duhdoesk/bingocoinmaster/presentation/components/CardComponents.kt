@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -43,7 +44,7 @@ fun BingoCard(
     ) {
         BingoLazyGrid(state.cardList.take(3))
 
-        Column(Modifier.padding(4.dp)) {
+        Column(Modifier.padding(horizontal = 4.dp)) {
             Text(
                 text = "Bingo da Gratidão",
                 textAlign = TextAlign.Center,
@@ -66,7 +67,7 @@ fun BingoCard(
                     Image(
                         painter = painterResource(id = R.drawable.hearts),
                         contentDescription = "Hearts",
-                        modifier = Modifier.size(60.dp)
+                        modifier = Modifier.size(40.dp)
                     )
                 }
 
@@ -103,12 +104,14 @@ fun BingoCard(
                     Image(
                         painter = painterResource(id = R.drawable.hearts),
                         contentDescription = "Hearts",
-                        modifier = Modifier.size(60.dp)
+                        modifier = Modifier.size(40.dp)
                     )
                 }
             }
 
         }
+
+        Spacer(modifier = Modifier.height(20.dp))
 
         BingoLazyGrid(state.cardList.takeLast(3))
     }
@@ -183,6 +186,7 @@ fun BingoStone(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(2.dp)
+                    .height(50.dp)
             )
         }
     }

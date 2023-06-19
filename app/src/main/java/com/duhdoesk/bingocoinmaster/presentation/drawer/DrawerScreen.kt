@@ -29,8 +29,7 @@ fun DrawingScreen(
         BingoCard(state = state)
 
         Button(
-            onClick = { onClick() },
-            modifier = Modifier.padding(top = 32.dp)
+            onClick = { onClick() }
         ) {
             Text("New Card")
         }
