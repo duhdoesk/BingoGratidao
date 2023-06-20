@@ -1,20 +1,14 @@
 package com.duhdoesk.bingocoinmaster.presentation.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -50,7 +45,7 @@ fun BingoCard(
 
         Column(Modifier.padding(horizontal = 4.dp)) {
             Text(
-                text = "Bingo da Gratidão",
+                text = stringResource(id = R.string.screen_title),
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 40.sp,
@@ -83,7 +78,7 @@ fun BingoCard(
                         .height(80.dp)
                 ) {
                     Text(
-                        text = "Cartela nº",
+                        text = stringResource(id = R.string.card_number),
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -144,7 +139,8 @@ fun BingoStone(
     ) {
         Card(
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            elevation = CardDefaults.cardElevation(6.dp)
         ) {
             Box(
                 contentAlignment = Alignment.BottomStart,
@@ -187,6 +183,7 @@ fun BingoStone(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(2.dp)
+                        .height(40.dp)
                 )
             }
         }
