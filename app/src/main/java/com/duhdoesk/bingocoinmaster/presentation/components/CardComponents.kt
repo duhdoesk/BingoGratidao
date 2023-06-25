@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -118,7 +119,7 @@ fun BingoLazyGrid(
     cards: List<Card>
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 100.dp), userScrollEnabled = false
+        columns = GridCells.Fixed(3), userScrollEnabled = false
     ) {
         for (card in cards) {
             item {
@@ -153,7 +154,8 @@ fun BingoStone(
                         .build(),
                     contentDescription = "Stone Picture",
                     placeholder = painterResource(id = R.drawable.placeholder),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
                 )
 
                 Box(
