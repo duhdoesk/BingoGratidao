@@ -10,18 +10,48 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.duhdoesk.bingocoinmaster.R
 import com.duhdoesk.bingocoinmaster.presentation.components.BingoCard
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+@Composable
+fun DrawerScreen(
+    navController: NavController,
+    viewModel: DrawerViewModel = hiltViewModel()
+) {
+
+    when (val state = viewModel.state.collectAsState().value) {
+        DrawState.Loading -> LoadingScreen()
+
+        DrawState.Ready -> ReadyScreen(
+            onClick = { viewModel.sortNewBingoCard() }
+        )
+
+        else -> DrawingScreen(
+            state = state as DrawState.Drawn,
+            onClick = { viewModel.sortNewBingoCard() },
+            navController = navController
+        )
+    }
+}
 
 @Composable
 fun DrawingScreen(
     state: DrawState.Drawn,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    navController: NavController
 ) {
     Column(
         modifier = Modifier

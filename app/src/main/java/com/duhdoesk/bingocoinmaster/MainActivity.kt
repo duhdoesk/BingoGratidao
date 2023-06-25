@@ -7,6 +7,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.duhdoesk.bingocoinmaster.navigation.AppNavigation
 import com.duhdoesk.bingocoinmaster.presentation.drawer.DrawState
 import com.duhdoesk.bingocoinmaster.presentation.drawer.LoadingScreen
 import com.duhdoesk.bingocoinmaster.presentation.drawer.DrawerViewModel
@@ -22,8 +23,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             BingoCoinMasterTheme() {
                 Surface {
-                    val viewModel = viewModel<DrawerViewModel>()
-                    BingoApp(viewModel)
+                    BingoApp()
+//                    val viewModel = viewModel<DrawerViewModel>()
+//                    BingoApp(viewModel)
                 }
             }
         }
@@ -31,24 +33,29 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun BingoApp(viewModel: DrawerViewModel) {
-
-    when (val state = viewModel.state.collectAsState().value) {
-        is DrawState.Loading -> {
-            LoadingScreen()
-        }
-
-        is DrawState.Ready -> {
-            ReadyScreen(
-                onClick = { viewModel.sortNewBingoCard() }
-            )
-        }
-
-        else -> {
-            DrawingScreen(
-                state = state as DrawState.Drawn,
-                onClick = { viewModel.sortNewBingoCard() }
-            )
-        }
-    }
+fun BingoApp() {
+    AppNavigation()
 }
+
+//@Composable
+//fun BingoApp(viewModel: DrawerViewModel) {
+//
+//    when (val state = viewModel.state.collectAsState().value) {
+//        is DrawState.Loading -> {
+//            LoadingScreen()
+//        }
+//
+//        is DrawState.Ready -> {
+//            ReadyScreen(
+//                onClick = { viewModel.sortNewBingoCard() }
+//            )
+//        }
+//
+//        else -> {
+//            DrawingScreen(
+//                state = state as DrawState.Drawn,
+//                onClick = { viewModel.sortNewBingoCard() }
+//            )
+//        }
+//    }
+//}
