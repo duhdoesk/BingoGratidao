@@ -1,6 +1,7 @@
 package com.duhdoesk.bingocoinmaster.presentation.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,15 +31,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.duhdoesk.bingocoinmaster.R
 import com.duhdoesk.bingocoinmaster.model.Card
+import com.duhdoesk.bingocoinmaster.navigation.AppScreens
 import com.duhdoesk.bingocoinmaster.presentation.drawer.DrawState
 
 @Composable
 fun BingoCard(
-    state: DrawState.Drawn
+    state: DrawState.Drawn,
+    navController: NavController
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -110,13 +114,14 @@ fun BingoCard(
 
         }
 
-        BingoLazyGrid(state.cardList)
+        BingoLazyGrid(state.cardList, navController)
     }
 }
 
 @Composable
 fun BingoLazyGrid(
-    cards: List<Card>
+    cards: List<Card>,
+    navController: NavController
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3), userScrollEnabled = false
@@ -124,7 +129,9 @@ fun BingoLazyGrid(
         for (card in cards) {
             item {
                 BingoStone(
-                    card = card, modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp)
+                    card = card,
+                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
+                    navController
                 )
             }
         }
@@ -133,7 +140,9 @@ fun BingoLazyGrid(
 
 @Composable
 fun BingoStone(
-    card: Card, modifier: Modifier = Modifier
+    card: Card,
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
     Column(
         modifier = modifier
@@ -141,7 +150,12 @@ fun BingoStone(
         Card(
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-            elevation = CardDefaults.cardElevation(6.dp)
+            elevation = CardDefaults.cardElevation(6.dp),
+            modifier = Modifier.clickable {
+                navController.navigate(
+                    "${AppScreens.CharacterScreen.name}/${card.cardId}"
+                )
+            }
         ) {
             Box(
                 contentAlignment = Alignment.BottomStart,

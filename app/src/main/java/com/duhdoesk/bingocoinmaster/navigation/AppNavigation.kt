@@ -16,8 +16,11 @@ fun AppNavigation() {
             DrawerScreen(navController = navController)
         }
 
-        composable(AppScreens.CharacterScreen.name) {
-            CharacterScreen(navController)
+        composable("${AppScreens.CharacterScreen.name}/{cardId}") { navBackStackEntry ->
+            val cardId = navBackStackEntry.arguments?.getString("cardId")
+            cardId?.let {
+                CharacterScreen(navController, it)
+            }
         }
     }
 }
