@@ -3,7 +3,7 @@ package com.duhdoesk.bingocoinmaster.di
 import android.content.Context
 import androidx.room.Room
 import com.duhdoesk.bingocoinmaster.data.AppDatabase
-import com.duhdoesk.bingocoinmaster.data.CardDao
+import com.duhdoesk.bingocoinmaster.data.CharacterDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +18,7 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideCardDao(appDatabase: AppDatabase) : CardDao =
+    fun provideCardDao(appDatabase: AppDatabase) : CharacterDao =
         appDatabase.cardDao()
 
     @Singleton

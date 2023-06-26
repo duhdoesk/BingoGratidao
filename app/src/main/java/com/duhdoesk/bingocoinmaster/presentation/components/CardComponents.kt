@@ -35,7 +35,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.duhdoesk.bingocoinmaster.R
-import com.duhdoesk.bingocoinmaster.model.Card
+import com.duhdoesk.bingocoinmaster.model.Character
 import com.duhdoesk.bingocoinmaster.navigation.AppScreens
 import com.duhdoesk.bingocoinmaster.presentation.drawer.DrawState
 
@@ -114,22 +114,22 @@ fun BingoCard(
 
         }
 
-        BingoLazyGrid(state.cardList, navController)
+        BingoLazyGrid(state.characterList, navController)
     }
 }
 
 @Composable
 fun BingoLazyGrid(
-    cards: List<Card>,
+    characters: List<Character>,
     navController: NavController
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3), userScrollEnabled = false
     ) {
-        for (card in cards) {
+        for (card in characters) {
             item {
                 BingoStone(
-                    card = card,
+                    character = card,
                     modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
                     navController
                 )
@@ -140,7 +140,7 @@ fun BingoLazyGrid(
 
 @Composable
 fun BingoStone(
-    card: Card,
+    character: Character,
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
@@ -153,7 +153,7 @@ fun BingoStone(
             elevation = CardDefaults.cardElevation(6.dp),
             modifier = Modifier.clickable {
                 navController.navigate(
-                    "${AppScreens.CharacterScreen.name}/${card.cardId}"
+                    "${AppScreens.CharacterScreen.name}/${character.charId}"
                 )
             }
         ) {
@@ -163,7 +163,7 @@ fun BingoStone(
             ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(card.picture)
+                        .data(character.picture)
                         .crossfade(true)
                         .build(),
                     contentDescription = "Stone Picture",
@@ -183,7 +183,7 @@ fun BingoStone(
                     )
 
                     Text(
-                        text = card.cardId,
+                        text = character.charId,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = Color.White
@@ -192,7 +192,7 @@ fun BingoStone(
             }
             Row(Modifier.fillMaxWidth()) {
                 Text(
-                    text = card.name,
+                    text = character.name,
                     style = MaterialTheme.typography.labelMedium,
                     maxLines = 2,
                     textAlign = TextAlign.Center,

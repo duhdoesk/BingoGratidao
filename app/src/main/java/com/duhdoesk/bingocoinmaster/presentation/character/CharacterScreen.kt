@@ -70,7 +70,7 @@ fun Ready(state: CharacterState.Ready) {
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(state.card.picture)
+                    .data(state.character.picture)
                     .crossfade(true)
                     .scale(Scale.FILL)
                     .build(),
@@ -82,7 +82,7 @@ fun Ready(state: CharacterState.Ready) {
         }
 
         Text(
-            text = state.card.name,
+            text = state.character.name,
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier
@@ -103,7 +103,7 @@ fun Ready(state: CharacterState.Ready) {
             )
 
             Text(
-                text = state.card.cardId,
+                text = state.character.charId,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge,
                 color = Color.White,

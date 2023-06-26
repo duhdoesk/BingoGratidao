@@ -4,14 +4,14 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "card_table")
-data class Card(
+@Entity(tableName = "char_table")
+data class Character(
     @PrimaryKey
-    val cardId: String,
+    val charId: String,
 
-    @ColumnInfo(name = "card_name")
+    @ColumnInfo(name = "char_name")
     val name: String,
 
-    @ColumnInfo(name = "card_picture")
+    @ColumnInfo(name = "char_picture")
     val picture: String
 )

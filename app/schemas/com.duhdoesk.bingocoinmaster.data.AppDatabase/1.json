@@ -2,27 +2,27 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6ffd5d00861ac23f130e883ad19f0165",
+    "identityHash": "04147caed24e0642c015e74dc2b44701",
     "entities": [
       {
-        "tableName": "card_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cardId` TEXT NOT NULL, `card_name` TEXT NOT NULL, `card_picture` TEXT NOT NULL, PRIMARY KEY(`cardId`))",
+        "tableName": "char_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`charId` TEXT NOT NULL, `char_name` TEXT NOT NULL, `char_picture` TEXT NOT NULL, PRIMARY KEY(`charId`))",
         "fields": [
           {
-            "fieldPath": "cardId",
-            "columnName": "cardId",
+            "fieldPath": "charId",
+            "columnName": "charId",
             "affinity": "TEXT",
             "notNull": true
           },
           {
             "fieldPath": "name",
-            "columnName": "card_name",
+            "columnName": "char_name",
             "affinity": "TEXT",
             "notNull": true
           },
           {
             "fieldPath": "picture",
-            "columnName": "card_picture",
+            "columnName": "char_picture",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -30,7 +30,7 @@
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "cardId"
+            "charId"
           ]
         },
         "indices": [],
@@ -40,7 +40,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6ffd5d00861ac23f130e883ad19f0165')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '04147caed24e0642c015e74dc2b44701')"
     ]
   }
 }
