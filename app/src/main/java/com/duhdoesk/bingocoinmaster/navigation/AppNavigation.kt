@@ -6,7 +6,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.duhdoesk.bingocoinmaster.presentation.character.CharacterScreen
 import com.duhdoesk.bingocoinmaster.presentation.drawer.DrawerScreen
-import com.duhdoesk.bingocoinmaster.presentation.drawer.LoadingScreen
 
 @Composable
 fun AppNavigation() {
@@ -19,7 +18,7 @@ fun AppNavigation() {
         composable("${AppScreens.CharacterScreen.name}/{cardId}") { navBackStackEntry ->
             val cardId = navBackStackEntry.arguments?.getString("cardId")
             cardId?.let {
-                CharacterScreen(navController, it)
+                CharacterScreen(it)
             }
         }
     }

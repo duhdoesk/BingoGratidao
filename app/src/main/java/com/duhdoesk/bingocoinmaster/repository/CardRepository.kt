@@ -6,5 +6,5 @@ import javax.inject.Inject
 
 class CardRepository @Inject constructor(private val cardDao: CardDao) {
     suspend fun getAllCards() : List<Card> = cardDao.getAllCards()
-    suspend fun getCardById(id: String) : Card = cardDao.getCardById(id)
+    suspend fun getCardById(id: String) : Card? = cardDao.getCardById(id)
 }

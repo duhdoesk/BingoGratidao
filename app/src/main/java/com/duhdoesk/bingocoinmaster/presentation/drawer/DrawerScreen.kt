@@ -23,8 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.duhdoesk.bingocoinmaster.R
-import com.duhdoesk.bingocoinmaster.model.Card
-import com.duhdoesk.bingocoinmaster.navigation.AppScreens
 import com.duhdoesk.bingocoinmaster.presentation.components.BingoCard
 
 @Composable
