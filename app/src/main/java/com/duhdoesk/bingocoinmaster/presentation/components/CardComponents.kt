@@ -37,11 +37,11 @@ import coil.request.ImageRequest
 import com.duhdoesk.bingocoinmaster.R
 import com.duhdoesk.bingocoinmaster.model.Character
 import com.duhdoesk.bingocoinmaster.navigation.AppScreens
-import com.duhdoesk.bingocoinmaster.presentation.drawer.DrawState
+import com.duhdoesk.bingocoinmaster.presentation.card.CardDrawState
 
 @Composable
 fun BingoCard(
-    state: DrawState.Drawn,
+    state: CardDrawState.Drawn,
     navController: NavController
 ) {
     Column(
