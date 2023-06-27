@@ -1,4 +1,4 @@
-package com.example.compose
+package com.duhdoesk.bingocoinmaster.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -34,9 +34,9 @@ private val LightColors = lightColorScheme(
     inverseOnSurface = md_theme_light_inverseOnSurface,
     inverseSurface = md_theme_light_inverseSurface,
     inversePrimary = md_theme_light_inversePrimary,
-    surfaceTint = md_theme_light_surfaceTint,
+    surfaceTint = md_theme_light_surface,
     outlineVariant = md_theme_light_outlineVariant,
-    scrim = md_theme_light_scrim,
+    scrim = md_theme_light_scrim
 )
 
 

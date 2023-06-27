@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.duhdoesk.bingocoinmaster.navigation.AppNavigation
-import com.example.compose.BingoCoinMasterTheme
+import com.duhdoesk.bingocoinmaster.ui.theme.BingoCoinMasterTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

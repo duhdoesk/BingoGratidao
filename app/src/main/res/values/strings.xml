@@ -2,6 +2,8 @@
     <string name="app_name">Bingo Coin Master</string>
 
 <!--    Screen Texts-->
+    <string name="developer">Desenvolvido por Eduardo Scaranari</string>
+
     <string name="loading_data">Carregando dados…</string>
 
     <string name="all_ready">Tudo pronto! Pode começar a sortear :)</string>

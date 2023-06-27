@@ -66,7 +66,7 @@ fun Ready(state: CharacterState.Ready) {
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.5f)
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = 16.dp)
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
