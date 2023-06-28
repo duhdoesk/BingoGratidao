@@ -20,11 +20,13 @@ sealed class CardDrawState {
 }
 
 @HiltViewModel
-class CardViewModel @Inject constructor(private val repository: CharacterRepository) : ViewModel() {
+class CardViewModel @Inject constructor(
+    private val repository: CharacterRepository
+    ) : ViewModel() {
 
 //    state variables
-    private val _Card_drawState = MutableStateFlow<CardDrawState>(CardDrawState.Loading)
-    val state = _Card_drawState.asStateFlow()
+    private val _drawState = MutableStateFlow<CardDrawState>(CardDrawState.Loading)
+    val state = _drawState.asStateFlow()
 
 //    card list
     private val characterList: MutableState<List<Character>> = mutableStateOf(emptyList())
@@ -35,13 +37,13 @@ class CardViewModel @Inject constructor(private val repository: CharacterReposit
     init {
         viewModelScope.launch {
             characterList.value = repository.getAllCharacters()
-            _Card_drawState.value = CardDrawState.Ready
+            _drawState.value = CardDrawState.Ready
         }
     }
     fun sortNewBingoCard() {
         counter.value += 1
 
-        _Card_drawState.value = CardDrawState.Drawn(
+        _drawState.value = CardDrawState.Drawn(
             characterList
                 .value
                 .shuffled()
@@ -49,6 +51,6 @@ class CardViewModel @Inject constructor(private val repository: CharacterReposit
             counter.value
         )
 
-        Log.d("CARD", _Card_drawState.value.toString())
+        Log.d("CARD", _drawState.value.toString())
     }
 }

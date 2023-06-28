@@ -1,7 +1,9 @@
 package com.duhdoesk.bingocoinmaster.data
 
 import androidx.room.Dao
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.duhdoesk.bingocoinmaster.model.Character
 
 @Dao
@@ -12,4 +14,5 @@ interface CharacterDao {
 
     @Query("SELECT * from char_table where charId =:id")
     suspend fun getCharacterById(id: String) : Character?
+
 }

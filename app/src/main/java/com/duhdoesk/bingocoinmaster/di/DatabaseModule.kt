@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.duhdoesk.bingocoinmaster.data.AppDatabase
 import com.duhdoesk.bingocoinmaster.data.CharacterDao
+import com.duhdoesk.bingocoinmaster.data.SessionDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,8 +19,13 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideCardDao(appDatabase: AppDatabase) : CharacterDao =
-        appDatabase.cardDao()
+    fun provideSessionDao(appDatabase: AppDatabase) : SessionDao =
+        appDatabase.sessionDao()
+
+    @Singleton
+    @Provides
+    fun provideCharacterDao(appDatabase: AppDatabase) : CharacterDao =
+        appDatabase.characterDao()
 
     @Singleton
     @Provides

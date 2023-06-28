@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "04147caed24e0642c015e74dc2b44701",
+    "identityHash": "1806e45e8e26a5d8b17a302c8484d968",
     "entities": [
       {
         "tableName": "char_table",
@@ -35,12 +35,44 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "session_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`session_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `drawn_characters` TEXT NOT NULL, `is_completed` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "sessionId",
+            "columnName": "session_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "drawnElements",
+            "columnName": "drawn_characters",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isCompleted",
+            "columnName": "is_completed",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "session_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '04147caed24e0642c015e74dc2b44701')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1806e45e8e26a5d8b17a302c8484d968')"
     ]
   }
 }
