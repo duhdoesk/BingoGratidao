@@ -107,7 +107,7 @@ fun HomeScreen(navController: NavController) {
                 ),
                 modifier = Modifier
                     .size(120.dp)
-                    .clickable { }
+                    .clickable { navController.navigate(AppScreens.DrawerScreen.name) }
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
