@@ -10,8 +10,10 @@ fun DrawerScreen(
     viewModel: DrawerViewModel = hiltViewModel()
 ) {
     when (val state = viewModel.state.collectAsState().value) {
-        DrawerState.Loading -> LoadingScreen()
-        else -> DrawingScreen(state = state as DrawerState.Drawing)
+        is DrawerState.Loading -> LoadingScreen()
+        is DrawerState.Ready -> ReadyScreen()
+        is DrawerState.Drawing -> DrawingScreen(state = state as DrawerState.Drawing)
+        else -> FinishedScreen(state = state as DrawerState.Finished)
     }
 }
 
@@ -21,6 +23,16 @@ fun LoadingScreen() {
 }
 
 @Composable
+fun ReadyScreen() {
+    Text(text = "Ready")
+}
+
+@Composable
 fun DrawingScreen(state: DrawerState.Drawing) {
     Text(text = "Drawing")
+}
+
+@Composable
+fun FinishedScreen(state: DrawerState.Finished) {
+    Text(text = "Finished")
 }

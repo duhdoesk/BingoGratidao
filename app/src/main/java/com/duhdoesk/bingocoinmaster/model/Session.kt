@@ -11,7 +11,7 @@ data class Session(
     val sessionId: Long,
 
     @ColumnInfo(name = "drawn_characters")
-    val drawnElements: String,
+    val drawnCharacters: String,
 
     @ColumnInfo(name = "is_completed")
     val isCompleted: Boolean
