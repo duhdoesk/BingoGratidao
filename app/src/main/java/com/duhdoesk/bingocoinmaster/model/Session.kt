@@ -8,11 +8,11 @@ import androidx.room.PrimaryKey
 data class Session(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "session_id")
-    val sessionId: Long,
+    val sessionId: Long = 0L,
 
     @ColumnInfo(name = "drawn_characters")
-    val drawnCharacters: String,
+    val drawnCharacters: String = "",
 
     @ColumnInfo(name = "is_completed")
-    val isCompleted: Boolean
+    val isCompleted: Boolean = false
 )

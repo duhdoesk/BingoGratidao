@@ -12,8 +12,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed class DrawerState() {
+sealed class DrawerState {
     object Loading : DrawerState()
+    object NotStarted : DrawerState()
     object Ready : DrawerState()
     data class Drawing(val drawnCharacters: List<Character>) : DrawerState()
     data class Finished(val drawnCharacters: List<Character>) : DrawerState()
@@ -62,6 +63,21 @@ class DrawerViewModel @Inject constructor(
         }
     }
 
+    private fun checkDrawingState() {
+        if (drawnCharacters.isEmpty()) {
+            _drawState.value = DrawerState.NotStarted
+        } else {
+            when (availableCharacters.isEmpty()) {
+                true -> {
+                    _drawState.value = DrawerState.Finished(drawnCharacters)
+                    session?.let { finishSession(it.sessionId) }
+                }
+
+                false -> _drawState.value = DrawerState.Drawing(drawnCharacters)
+            }
+        }
+    }
+
     private fun populateCharactersLists(drawnCharactersIdsList: List<String>) {
 
         /*
@@ -74,22 +90,50 @@ class DrawerViewModel @Inject constructor(
                 drawnCharacters.add(it)
             }
 
-        /*
-        populate the list of the available characters - the ones that has
-        not been drawn
-        */
-        availableCharacters =
-            allCharacters.filter {
-                it.charId !in drawnCharactersIdsList
-            }.toMutableList()
+
+            /*
+            populate the list of the available characters - the ones that has
+            not been drawn
+            */
+            availableCharacters =
+                allCharacters.filter {
+                    it.charId !in drawnCharactersIdsList
+                }.toMutableList()
 
         }
     }
 
-    private fun checkDrawingState() {
-        when (availableCharacters.isEmpty()) {
-            true -> _drawState.value = DrawerState.Finished(drawnCharacters)
-            false -> _drawState.value = DrawerState.Drawing(drawnCharacters)
+    private fun finishSession(sessionId: Long) {
+        viewModelScope.launch {
+            sRepo.finishSession(sessionId)
         }
+    }
+
+    private fun updateDrawnCharactersIds(charId: String) {
+        viewModelScope.launch {
+            session?.let { session ->
+                val drawnCharactersIds = "${sRepo.getDrawnElementsIds(session.sessionId)}${charId},"
+                sRepo.setDrawnElementsIds(session.sessionId, drawnCharactersIds)
+            }
+        }
+    }
+
+    fun startNewDrawing() {
+        val newSession = Session()
+        viewModelScope.launch {
+            sRepo.createNewSession(newSession)
+            checkSavedState()
+        }
+    }
+
+    fun drawNextCharacter() {
+        availableCharacters.shuffle()
+        val nextCharacter = availableCharacters[0]
+
+        drawnCharacters.add(nextCharacter)
+        availableCharacters.removeFirst()
+
+        checkDrawingState()
+        updateDrawnCharactersIds(nextCharacter.charId)
     }
 }
