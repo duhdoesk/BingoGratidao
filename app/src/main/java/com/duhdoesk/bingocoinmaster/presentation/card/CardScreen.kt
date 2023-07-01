@@ -24,6 +24,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.duhdoesk.bingocoinmaster.R
 import com.duhdoesk.bingocoinmaster.presentation.components.BingoCard
+import com.duhdoesk.bingocoinmaster.presentation.components.CommonLoadingScreen
+import com.duhdoesk.bingocoinmaster.presentation.components.CommonReadyScreen
 
 @Composable
 fun CardScreen(
@@ -32,9 +34,9 @@ fun CardScreen(
 ) {
 
     when (val state = viewModel.state.collectAsState().value) {
-        CardDrawState.Loading -> CardLoadingScreen()
+        CardDrawState.Loading -> CommonLoadingScreen()
 
-        CardDrawState.Ready -> CardReadyScreen(
+        CardDrawState.Ready -> CommonReadyScreen(
             onClick = { viewModel.sortNewBingoCard() }
         )
 
@@ -84,44 +86,11 @@ fun CardDrawingScreen(
             )
         }
 
-
-
         Button(
             onClick = { onButtonClick() },
             modifier = Modifier.padding(top = 8.dp)
         ) {
             Text(stringResource(id = R.string.new_card_button))
         }
-    }
-}
-
-@Composable
-fun CardReadyScreen(onClick: () -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(stringResource(id = R.string.all_ready))
-
-        Button(
-            onClick = { onClick() },
-            modifier = Modifier
-                .width(160.dp)
-                .padding(top = 16.dp)
-        ) {
-            Text(stringResource(id = R.string.start_button))
-        }
-    }
-}
-
-@Composable
-fun CardLoadingScreen() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(stringResource(id = R.string.loading_data))
     }
 }

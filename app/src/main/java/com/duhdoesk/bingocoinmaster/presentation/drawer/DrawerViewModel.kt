@@ -14,8 +14,8 @@ import javax.inject.Inject
 
 sealed class DrawerState {
     object Loading : DrawerState()
-    object NotStarted : DrawerState()
     object Ready : DrawerState()
+    object NotStarted : DrawerState()
     data class Drawing(val drawnCharacters: List<Character>) : DrawerState()
     data class Finished(val drawnCharacters: List<Character>) : DrawerState()
 }
