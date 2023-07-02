@@ -13,4 +13,9 @@
     <string name="card_number">Cartela nº</string>
     <string name="new_card_button">Nova Cartela</string>
     <string name="name">Nome:</string>
+
+    <string name="nextCharacter">Próximo</string>
+    <string name="finishDrawing">Terminar Bingo</string>
+    <string name="drawnCharacters">Personagens Sorteados</string>
+    <string name="finishDrawingConfirmation">Deseja terminar o sorteio atual?</string>
 </resources>
