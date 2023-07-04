@@ -60,28 +60,17 @@ class DrawerViewModel @Inject constructor(
 
     private fun checkSavedState() {
         viewModelScope.launch {
-
             getActiveSession()
             getAllCharacters()
 
         }.invokeOnCompletion {
-
             if (session == null) {
                 _drawState.value = DrawerState.Ready
 
             } else {
-                session?.let { session ->
-                    val drawnCharactersIdsList =
-                        session.drawnCharacters.split(",").onEach { it.trim() }
-                            .filterNot { it.isEmpty() }
-
-                    updateDrawnCharactersList(drawnCharactersIdsList)
-                    updateAvailableCharactersList(drawnCharactersIdsList)
-                }
-
+                updateCharactersLists()
                 checkDrawingState()
             }
-
         }
     }
 
@@ -96,11 +85,18 @@ class DrawerViewModel @Inject constructor(
         }
     }
 
-    private fun updateDrawnCharactersList(drawnCharactersIdsList: List<String>) {
+    private fun updateCharactersLists() {
+        session?.let { session ->
+            val drawnCharactersIdsList =
+                session.drawnCharacters.split(",").onEach { it.trim() }
+                    .filterNot { it.isEmpty() }
 
-        /*
-        populate the list of drawn characters at the current session
-        */
+            updateDrawnCharactersList(drawnCharactersIdsList)
+            updateAvailableCharactersList(drawnCharactersIdsList)
+        }
+    }
+
+    private fun updateDrawnCharactersList(drawnCharactersIdsList: List<String>) {
         drawnCharactersIdsList.forEach { drawnCharacterId ->
             allCharacters.find { character ->
                 character.charId == drawnCharacterId
@@ -111,11 +107,6 @@ class DrawerViewModel @Inject constructor(
     }
 
     private fun updateAvailableCharactersList(drawnCharactersIdsList: List<String>) {
-
-        /*
-        populate the list of the available characters - the ones that has
-        not been drawn
-        */
         availableCharacters =
             allCharacters.filter {
                 it.charId !in drawnCharactersIdsList
@@ -135,15 +126,7 @@ class DrawerViewModel @Inject constructor(
             session = newSession.copy(sessionId = sessionId)
 
         }.invokeOnCompletion {
-            session?.let { session ->
-                val drawnCharactersIdsList =
-                    session.drawnCharacters.split(",").onEach { it.trim() }
-                        .filterNot { it.isEmpty() }
-
-                updateDrawnCharactersList(drawnCharactersIdsList)
-                updateAvailableCharactersList(drawnCharactersIdsList)
-            }
-
+            updateCharactersLists()
             drawNextCharacter()
         }
     }
