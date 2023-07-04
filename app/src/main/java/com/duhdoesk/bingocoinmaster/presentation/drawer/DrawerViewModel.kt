@@ -1,6 +1,5 @@
 package com.duhdoesk.bingocoinmaster.presentation.drawer
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.duhdoesk.bingocoinmaster.model.Character
@@ -22,8 +21,8 @@ sealed class DrawerState {
 
 @HiltViewModel
 class DrawerViewModel @Inject constructor(
-    private val cRepo: CharacterRepository,
-    private val sRepo: SessionRepository
+    private val characterRepository: CharacterRepository,
+    private val sessionRepository: SessionRepository
 ) : ViewModel() {
 
     //    state variables
@@ -43,11 +42,11 @@ class DrawerViewModel @Inject constructor(
     }
 
     private suspend fun getActiveSession() {
-        session = sRepo.getActiveSession()
+        session = sessionRepository.getActiveSession()
     }
 
     private suspend fun getAllCharacters() {
-        allCharacters = cRepo.getAllCharacters()
+        allCharacters = characterRepository.getAllCharacters()
     }
 
     private suspend fun updateDrawnCharactersIds(charId: String) {
@@ -55,7 +54,7 @@ class DrawerViewModel @Inject constructor(
         session = session?.copy(drawnCharacters = drawnCharacters)
 
         session?.let { session ->
-            sRepo.setDrawnElementsIds(session.sessionId, drawnCharacters)
+            sessionRepository.setDrawnElementsIds(session.sessionId, drawnCharacters)
         }
     }
 
@@ -69,17 +68,18 @@ class DrawerViewModel @Inject constructor(
 
             if (session == null) {
                 _drawState.value = DrawerState.Ready
+
             } else {
                 session?.let { session ->
-
                     val drawnCharactersIdsList =
                         session.drawnCharacters.split(",").onEach { it.trim() }
                             .filterNot { it.isEmpty() }
 
                     updateDrawnCharactersList(drawnCharactersIdsList)
                     updateAvailableCharactersList(drawnCharactersIdsList)
-                    checkDrawingState()
                 }
+
+                checkDrawingState()
             }
 
         }
@@ -108,11 +108,10 @@ class DrawerViewModel @Inject constructor(
                 drawnCharacters.add(it)
             }
         }
-
-        Log.d("DRAWN LIST", "$drawnCharacters")
     }
 
     private fun updateAvailableCharactersList(drawnCharactersIdsList: List<String>) {
+
         /*
         populate the list of the available characters - the ones that has
         not been drawn
@@ -121,22 +120,30 @@ class DrawerViewModel @Inject constructor(
             allCharacters.filter {
                 it.charId !in drawnCharactersIdsList
             }.toMutableList()
-
-        Log.d("AVAILABLE LIST", "$availableCharacters")
     }
 
     private fun finishSession(sessionId: Long) {
         viewModelScope.launch {
-            sRepo.finishSession(sessionId)
+            sessionRepository.finishSession(sessionId)
         }
     }
 
     fun startNewDrawing() {
-        val newSession = Session()
         viewModelScope.launch {
-            sRepo.createNewSession(newSession)
+            val newSession = Session()
+            val sessionId = sessionRepository.createNewSession(newSession)
+            session = newSession.copy(sessionId = sessionId)
+
         }.invokeOnCompletion {
-            checkSavedState()
+            session?.let { session ->
+                val drawnCharactersIdsList =
+                    session.drawnCharacters.split(",").onEach { it.trim() }
+                        .filterNot { it.isEmpty() }
+
+                updateDrawnCharactersList(drawnCharactersIdsList)
+                updateAvailableCharactersList(drawnCharactersIdsList)
+            }
+
             drawNextCharacter()
         }
     }
@@ -153,9 +160,6 @@ class DrawerViewModel @Inject constructor(
         viewModelScope.launch {
             updateDrawnCharactersIds(nextCharacter.charId)
         }
-
-        Log.d("DRAW NEXT CHARACTER AV", "${availableCharacters.size}")
-        Log.d("DRAW NEXT CHARACTER DR", "${drawnCharacters.size}")
     }
 
     fun finishDrawing() {

@@ -16,6 +16,10 @@
 
     <string name="nextCharacter">Próximo</string>
     <string name="finishDrawing">Terminar Bingo</string>
+    <string name="allCharactersDrawn">Todos os personagens já foram sorteados!</string>
     <string name="drawnCharacters">Personagens Sorteados</string>
     <string name="finishDrawingConfirmation">Deseja terminar o sorteio atual?</string>
+    <string name="confirm">Confirmar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="home">Voltar para Início</string>
 </resources>

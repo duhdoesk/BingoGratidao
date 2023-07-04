@@ -15,7 +15,7 @@ fun AppNavigation() {
     NavHost(navController = navController, startDestination = AppScreens.HomeScreen.name) {
 
         composable(AppScreens.DrawerScreen.name) {
-            DrawerScreen()
+            DrawerScreen(navController = navController)
         }
 
         composable(AppScreens.CardScreen.name) {

@@ -1,16 +1,17 @@
 package com.duhdoesk.bingocoinmaster.presentation.drawer
 
-import android.app.AlertDialog
-import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -34,32 +35,39 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
 import com.duhdoesk.bingocoinmaster.R
+import com.duhdoesk.bingocoinmaster.model.Character
+import com.duhdoesk.bingocoinmaster.navigation.AppScreens
 import com.duhdoesk.bingocoinmaster.presentation.components.CommonLoadingScreen
 import com.duhdoesk.bingocoinmaster.presentation.components.CommonReadyScreen
-import com.duhdoesk.bingocoinmaster.presentation.components.DrawnCharactersLazyRow
 
 @Composable
 fun DrawerScreen(
-    viewModel: DrawerViewModel = hiltViewModel()
+    viewModel: DrawerViewModel = hiltViewModel(),
+    navController: NavHostController
 ) {
     when (val state = viewModel.state.collectAsState().value) {
         is DrawerState.Loading -> CommonLoadingScreen()
+
         is DrawerState.Ready -> CommonReadyScreen(
             onClick = { viewModel.startNewDrawing() }
         )
 
-        is DrawerState.Drawing -> DrawingScreen(state = state)
-        else -> FinishedScreen(state = state as DrawerState.Finished)
+        is DrawerState.Drawing -> DrawingScreen(state = state, navController)
+
+        is DrawerState.Finished -> FinishedScreen(state = state, navController)
     }
 }
 
 @Composable
-fun DrawingScreen(
-    state: DrawerState.Drawing,
+fun ActiveSessionScreen(
+    state: DrawerState,
+    character: Character,
+    navController: NavHostController,
     viewModel: DrawerViewModel = hiltViewModel()
 ) {
     val showDialog = remember { mutableStateOf(false) }
@@ -108,7 +116,7 @@ fun DrawingScreen(
             ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(state.lastCharacter.picture)
+                        .data(character.picture)
                         .crossfade(true)
                         .scale(Scale.FILL)
                         .build(),
@@ -120,7 +128,7 @@ fun DrawingScreen(
             }
 
             Text(
-                text = state.lastCharacter.name,
+                text = character.name,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier
@@ -134,21 +142,32 @@ fun DrawingScreen(
                     .height(16.dp)
             )
 
-            Button(
-                onClick = { viewModel.drawNextCharacter() },
-                modifier = Modifier.width(200.dp)
-            ) {
-                Text(text = stringResource(id = R.string.nextCharacter))
-            }
+            if (state is DrawerState.Drawing) {
+                Button(
+                    onClick = { viewModel.drawNextCharacter() },
+                    modifier = Modifier.width(200.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.nextCharacter))
+                }
 
-            Button(
-                onClick = { showDialog.value = !showDialog.value },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondary
-                ),
-                modifier = Modifier.width(200.dp)
-            ) {
-                Text(text = stringResource(id = R.string.finishDrawing))
+                Button(
+                    onClick = { showDialog.value = !showDialog.value },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    ),
+                    modifier = Modifier.width(200.dp).padding(top = 4.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.finishDrawing))
+                }
+            } else {
+                Text(text = stringResource(id = R.string.allCharactersDrawn))
+
+                Button(
+                    onClick = { navController.popBackStack() },
+                    modifier = Modifier.padding(top = 4.dp).defaultMinSize(minWidth = 200.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.home))
+                }
             }
         }
 
@@ -165,7 +184,29 @@ fun DrawingScreen(
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.tertiary
             )
-            DrawnCharactersLazyRow(drawnList = viewModel.getDrawnCharacters().reversed())
+
+            LazyRow(
+                contentPadding = PaddingValues(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                for (c in viewModel.getDrawnCharacters().reversed()) {
+                    item {
+                        Card(
+                            elevation = CardDefaults.cardElevation(4.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor =
+                                MaterialTheme.colorScheme.surface
+                            )
+                        ) {
+                            Text(
+                                text = c.name,
+                                style = MaterialTheme.typography.labelLarge,
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        }
+                    }
+                }
+            }
         }
 
         if (showDialog.value) {
@@ -175,7 +216,7 @@ fun DrawingScreen(
                 text = { Text(stringResource(id = R.string.finishDrawingConfirmation)) },
                 confirmButton = {
                     Button(onClick = { viewModel.finishDrawing() }) {
-                        Text("Sim".uppercase())
+                        Text(stringResource(id = R.string.confirm).uppercase())
                     }
                 },
                 dismissButton = {
@@ -185,15 +226,28 @@ fun DrawingScreen(
                         ),
                         onClick = { showDialog.value = false }
                     ) {
-                        Text("Cancelar".uppercase())
+                        Text(stringResource(id = R.string.cancel).uppercase())
                     }
-                },
+                }
             )
         }
     }
 }
 
 @Composable
-fun FinishedScreen(state: DrawerState.Finished) {
-    Text(text = "Finished")
+fun FinishedScreen(state: DrawerState.Finished, navController: NavHostController) {
+    ActiveSessionScreen(
+        state = state,
+        character = state.lastCharacter,
+        navController = navController
+    )
+}
+
+@Composable
+fun DrawingScreen(state: DrawerState.Drawing, navController: NavHostController) {
+    ActiveSessionScreen(
+        state = state,
+        character = state.lastCharacter,
+        navController = navController
+    )
 }
