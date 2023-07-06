@@ -4,5 +4,6 @@ enum class AppScreens {
     CardScreen,
     CharacterScreen,
     DrawerScreen,
+    DrawnCharactersScreen,
     HomeScreen
 }

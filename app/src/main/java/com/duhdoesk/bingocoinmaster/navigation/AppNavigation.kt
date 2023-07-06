@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.duhdoesk.bingocoinmaster.presentation.character.CharacterScreen
 import com.duhdoesk.bingocoinmaster.presentation.card.CardScreen
 import com.duhdoesk.bingocoinmaster.presentation.drawer.DrawerScreen
+import com.duhdoesk.bingocoinmaster.presentation.drawer.DrawnCharactersScreen
 import com.duhdoesk.bingocoinmaster.presentation.home.HomeScreen
 
 @Composable
@@ -27,6 +28,10 @@ fun AppNavigation() {
             cardId?.let {
                 CharacterScreen(it)
             }
+        }
+
+        composable(AppScreens.DrawnCharactersScreen.name) {
+            DrawnCharactersScreen()
         }
 
         composable(AppScreens.HomeScreen.name) {

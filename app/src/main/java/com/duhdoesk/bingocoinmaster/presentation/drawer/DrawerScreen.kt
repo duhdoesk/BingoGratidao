@@ -1,5 +1,6 @@
 package com.duhdoesk.bingocoinmaster.presentation.drawer
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -187,7 +188,10 @@ fun ActiveSessionScreen(
 
             LazyRow(
                 contentPadding = PaddingValues(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.clickable {
+                    navController.navigate(AppScreens.DrawnCharactersScreen.name)
+                }
             ) {
                 for (c in viewModel.getDrawnCharacters().reversed()) {
                     item {

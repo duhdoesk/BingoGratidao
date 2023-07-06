@@ -1,5 +1,6 @@
 package com.duhdoesk.bingocoinmaster.presentation.drawer
 
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.duhdoesk.bingocoinmaster.model.Character
@@ -19,6 +20,11 @@ sealed class DrawerState {
     data class Finished(val lastCharacter: Character) : DrawerState()
 }
 
+sealed class DrawnCharactersState {
+    object Loading : DrawnCharactersState()
+    data class Ready(val drawnCharacters: List<Character>) : DrawnCharactersState()
+}
+
 @HiltViewModel
 class DrawerViewModel @Inject constructor(
     private val characterRepository: CharacterRepository,
@@ -28,6 +34,9 @@ class DrawerViewModel @Inject constructor(
     //    state variables
     private val _drawState = MutableStateFlow<DrawerState>(DrawerState.Loading)
     val state = _drawState.asStateFlow()
+
+    private val _drawnCharactersState = MutableStateFlow<DrawnCharactersState>(DrawnCharactersState.Loading)
+    val drawnCharactersState = _drawnCharactersState.asStateFlow()
 
     //    session
     private var session: Session? = null
@@ -78,7 +87,10 @@ class DrawerViewModel @Inject constructor(
         if (drawnCharacters.isNotEmpty()) {
             when (availableCharacters.isEmpty()) {
                 true -> finishDrawing()
-                false -> _drawState.value = DrawerState.Drawing(drawnCharacters.last())
+                false -> {
+                    _drawState.value = DrawerState.Drawing(drawnCharacters.last())
+                    _drawnCharactersState.value = DrawnCharactersState.Ready(drawnCharacters)
+                }
             }
         } else {
             _drawState.value = DrawerState.Ready
