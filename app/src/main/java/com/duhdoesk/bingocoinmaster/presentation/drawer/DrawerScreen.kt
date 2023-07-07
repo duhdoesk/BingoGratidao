@@ -129,7 +129,7 @@ fun ActiveSessionScreen(
             }
 
             Text(
-                text = character.name,
+                text = "#${character.charId} - ${character.name}",
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier
@@ -156,7 +156,9 @@ fun ActiveSessionScreen(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary
                     ),
-                    modifier = Modifier.width(200.dp).padding(top = 4.dp)
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(top = 4.dp)
                 ) {
                     Text(text = stringResource(id = R.string.finishDrawing))
                 }
@@ -165,7 +167,9 @@ fun ActiveSessionScreen(
 
                 Button(
                     onClick = { navController.popBackStack() },
-                    modifier = Modifier.padding(top = 4.dp).defaultMinSize(minWidth = 200.dp)
+                    modifier = Modifier
+                        .padding(top = 4.dp)
+                        .defaultMinSize(minWidth = 200.dp)
                 ) {
                     Text(text = stringResource(id = R.string.home))
                 }
